@@ -5,12 +5,9 @@
 <head runat="server">
 	<title>Relatorio Internações SGH</title>
 	<link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="jquery/jquery.mask.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
 
-	<script src='<%= ResolveUrl("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js") %>'
-		type="text/javascript"></script>
-		
-	 <script src='<%= ResolveUrl("https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js") %>'
-		type="text/javascript"></script>
 
 <style type="text/css">
 .table{
@@ -23,28 +20,17 @@
 	<form id="form1" runat="server">
 	<div class="container">    
 	   
-		<h2> Internações SGH</h2>
+		<h2> Censo SGH</h2>
 		
 		 <div class="form-group col-sm-2">                      
-		   <div id="um">
-		   Data_Inicio    
-			<asp:TextBox ID="dtIni" runat="server" class="form-control" Width="120px" ></asp:TextBox> 
-		  </div>
+		
 		  
-		 <div id="dois">
-		  Data_Fim
-			<asp:TextBox ID="dtFim" runat="server" class="form-control" Width="120px" ></asp:TextBox>   
-		  </div>
+		
 		   
-		   <div id="tres">
-			   <asp:DropDownList ID="DdlPesquisa" runat="server">
-				   <asp:ListItem Value="2">Internação</asp:ListItem>
-				   <asp:ListItem Value="1">Alta</asp:ListItem>
-			   </asp:DropDownList>
-			   </div>
+		
 	   </div> 
 	   
-		<input id="Button2" runat="server" type="button" onclick="gerarTabela()" value="Buscar Internações"
+		<input id="Button2" runat="server" type="button" onclick="gerarTabela()" value="Censo"
 			class="btn btn-success" />
 		<button onclick="salvaPlanilha();" class="btn btn-success">
 			Salva Planilha</button>
@@ -56,43 +42,34 @@
 			<thead class="thead-dark">
 				<tr>
 					<th>
-						Prontuario
+						nr_quarto
 					</th>
 					<th>
-						Nome
+						nm_unidade_funcional
 					</th>
 					<th>
-						Sexo
+						dt_internacao_data
 					</th>
 					<th>
-						Idade
+						dt_internacao_hora
 					</th>
 					<th>
-						Quarto
+						cd_prontuario
 					</th>
 					<th>
-						Leito
+						nm_paciente
 					</th>
 					<th>
-						Ala
+						in_sexo
 					</th>
 					<th>
-						Clínica
+						nr_idade
 					</th>
 					<th>
-						Unidade Funcional
+						dt_nascimento
 					</th>
 					<th>
-						Acomodação
-					</th>
-					<th>
-						St Leito
-					</th>
-					<th>
-						Data da Internação
-					</th>
-					<th>
-						Data Entrada no Setor
+						vinculo
 					</th>
 					<th>
 						nm_especialidade
@@ -101,47 +78,30 @@
 						nm_medico
 					</th>
 					<th>
-						dt_ultimo_evento
+						cod_CID
+					</th>
+					<th>
+						descricaoCID
+					</th>
+					<th>
+						tempo
 					</th>
 					<th>
 						nm_origem
 					</th>
 					<th>
-						sg_cid
+						nm_origem
 					</th>
 					<th>
-						tx_observacao
+						dt_ultimo_evento_data
+					</th>
+					<th>
+						dt_ultimo_evento_hora
 					</th>
 					<th>
 						nr_convenio
 					</th>
-					<th>
-						nr_plano
-					</th>
-					<th>
-						nm_convenio_plano
-					</th>
-					<th>
-						nr_crm_profissional
-					</th>
-					<th>
-						nm_carater_internacao
-					</th>
-					<th>
-						nm_origem_internacao
-					</th>
-					<th>
-						nr_procedimento
-					</th>
-					<th>
-						dt_alta_medica
-					</th>
-					<th>
-						dt_saida_paciente
-					</th>
-					<th>
-						dt_tipo_alta_medica
-					</th>
+					
 				</tr>
 			</thead>
 			<tbody id="tdata">
@@ -151,57 +111,56 @@
 	</form>
 
 	<script type="text/javascript">
-		$("#dtIni, #dtFim").mask("00/00/0000");
-		
 	
-		function formataData(data) {
-			var d = data.value;
-			var dia = d.substr(0, 2);
-			var mes = d.substr(3, 2);
-			var ano = d.substr(6, 4);
-			var dataCompleta = ano + "-" + mes + "-" + dia;
-			return dataCompleta;
-		}
+	
 		
-		function salvaPlanilha() {
-			var htmlPlanilha = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>' + document.getElementById("tdata1").innerHTML + '</table></body></html>';
+        function salvaPlanilha() {
+            var htmlPlanilha = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>' + document.getElementById("tdata1").innerHTML + '</table></body></html>';
 
-			var htmlBase64 = btoa(htmlPlanilha);
-			var link = "data:application/vnd.ms-excel;base64," + htmlBase64;
+            var htmlBase64 = btoa(htmlPlanilha);
+            var link = "data:application/vnd.ms-excel;base64," + htmlBase64;
 
+            // Captura a data e hora atual
+            var agora = new Date();
+            var ano = agora.getFullYear();
+            var mes = String(agora.getMonth() + 1).padStart(2, '0'); // Meses começam do 0
+            var dia = String(agora.getDate()).padStart(2, '0');
+            var horas = String(agora.getHours()).padStart(2, '0');
+            var minutos = String(agora.getMinutes()).padStart(2, '0');
+            var segundos = String(agora.getSeconds()).padStart(2, '0');
 
-			var hyperlink = document.createElement("a");
-			hyperlink.download = "Arquivo.xls";
-			hyperlink.href = link;
-			hyperlink.style.display = 'none';
+            var timestamp = `${ano}-${mes}-${dia}_${horas}-${minutos}-${segundos}`;
+            var nomeArquivo = `Arquivo_${timestamp}.xls`; // Nome do arquivo com data
 
-			document.body.appendChild(hyperlink);
-			hyperlink.click();
-			document.body.removeChild(hyperlink);
-		}
+            var hyperlink = document.createElement("a");
+            hyperlink.download = nomeArquivo;
+            hyperlink.href = link;
+            hyperlink.style.display = 'none';
+
+            document.body.appendChild(hyperlink);
+            hyperlink.click();
+            document.body.removeChild(hyperlink);
+        }
+
 
 			 //Teste jr
 		function gerarTabela() {
-			var dataIni = formataData(document.getElementById('<%=dtIni.ClientID %>'));
-			var dataFim = formataData(document.getElementById('<%=dtFim.ClientID %>'));
-			var tipoPesquisa = document.getElementById('<%=DdlPesquisa.ClientID%>');
-			dadosMes(dataIni, dataFim, tipoPesquisa.value);
+		
+			dadosMes();
 			
 			
 		}
 
-		function dadosMes(dataIni, dataFim,tipoPesquisa) {
-			var dIni = JSON.stringify(dataIni);
-			var dFim = JSON.stringify(dataFim);
-			var Tpesquisa = tipoPesquisa;
-			console.log(Tpesquisa);
+		function dadosMes() {
+		
+			
 			
 			jQuery.support.cors = true;
 			$.ajax({
 			async: false
-				, url: '<%= ResolveUrl("http://10.48.21.64:5000/hspmsgh-api/internacoes?tipo='+ Tpesquisa +'&dt_inicio=' + dIni + '&dt_fim=' + dFim + '") %>'
+				, url: '<%= ResolveUrl("http://intranethspm:5003/hspmsgh-api/censoNepi/") %>'
 				, crossDomain: true
-				//, data: '{tipo : 1, dt_inicio: "2020-02-03", dt_fim: "2020-02-03"}'
+			
 				, type: 'GET'
 				, contentType: 'application/json; charset=utf-8'
 				, dataType: 'json'
@@ -210,35 +169,27 @@
 									console.log("passou");
 									data.forEach(function(dt) {
 										$("tbody").append("<tr>" +
-											"<td>" + dt.cd_prontuario + "</td>" +
-											"<td>" + dt.nm_paciente + "</td>" +
-											"<td>" + dt.in_sexo + "</td>" +
-											"<td>" + dt.nr_idade + "</td>" +
-											"<td>" + dt.nr_quarto + "</td>" +                                            
-											"<td>" + dt.nr_leito + "</td>" +
-											"<td>" + dt.nm_ala + "</td>" +
-											"<td>" + dt.nm_clinica + "</td>" +
-											"<td>" + dt.nm_unidade_funcional + "</td>" +
-											"<td>" + dt.nm_acomodacao + "</td>" +
-											"<td>" + dt.st_leito + "</td>" +
-											"<td>" + dt.dt_internacao + "</td>" +
-											"<td>" + dt.dt_entrada_setor + "</td>" +
-											"<td>" + dt.nm_especialidade + "</td>" +
-											"<td>" + dt.nm_medico + "</td>" +
-											"<td>" + dt.dt_ultimo_evento + "</td>" +
+                                            "<td>" + dt.nr_quarto + "</td>" +
+                                            "<td>" + dt.nm_unidade_funcional + "</td>" +
+                                            "<td>" + dt.dt_internacao_data + "</td>" +
+                                            "<td>" + dt.dt_internacao_hora + "</td>" +
+                                            "<td>" + dt.cd_prontuario + "</td>" +                                            
+                                            "<td>" + dt.nm_paciente + "</td>" +
+                                            "<td>" + dt.in_sexo + "</td>" +
+                                            "<td>" + dt.nr_idade + "</td>" +
+                                            "<td>" + dt.dt_nascimento + "</td>" +
+                                            "<td>" + dt.vinculo + "</td>" +
+                                            "<td>" + dt.nm_especialidade + "</td>" +
+                                            "<td>" + dt.nm_medico + "</td>" +
+                                            "<td>" + dt.cod_CID + "</td>" +
+                                            "<td>" + dt.descricaoCID + "</td>" +
+                                            "<td>" + dt.tempo + "</td>" +
+                                            "<td>" + dt.nm_origem + "</td>" +
 											"<td>" + dt.nm_origem + "</td>" +                                            
-											"<td>" + dt.sg_cid + "</td>" +
-											"<td>" + dt.tx_observacao + "</td>" +
+                                            "<td>" + dt.dt_ultimo_evento_data + "</td>" +
+                                            "<td>" + dt.dt_ultimo_evento_hora + "</td>" +
 											"<td>" + dt.nr_convenio + "</td>" +
-											"<td>" + dt.nr_plano + "</td>" +
-											"<td>" + dt.nm_convenio_plano + "</td>" +
-											"<td>" + dt.nr_crm_profissional + "</td>" +
-											"<td>" + dt.nm_carater_internacao + "</td>" +
-											"<td>" + dt.nm_origem_internacao + "</td>" +
-											"<td>" + dt.nr_procedimento + "</td>" +
-											"<td>" + dt.dt_alta_medica + "</td>" +
-											"<td>" + dt.dt_saida_paciente + "</td>" +
-											"<td>" + dt.dc_tipo_alta_medica + "</td>" +
+											
 										 "</tr>"
 										);
 
@@ -257,7 +208,7 @@
 			window.location.reload()
 		}
 		
-	</script>
+    </script>
 	
    </body>
 </html>
